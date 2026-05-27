@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="sl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BSL108 - porocilo o poteku</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fb;
+      --panel: #ffffff;
+      --text: #182033;
+      --muted: #647087;
+      --line: #dbe1ea;
+      --blue: #1f6feb;
+      --green: #22863a;
+      --amber: #b7791f;
+      --shadow: 0 12px 28px rgba(24, 32, 51, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 44px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      padding: 12px 0 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+
+    .subtle {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .stamp {
+      color: var(--muted);
+      font-size: 14px;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .tile,
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .tile {
+      min-height: 150px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .value {
+      margin-top: 12px;
+      font-size: clamp(38px, 6vw, 62px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .section {
+      padding: 22px;
+      margin-top: 18px;
+    }
+
+    .section h2 {
+      margin: 0 0 16px;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .progress-wrap {
+      height: 18px;
+      border-radius: 999px;
+      background: #e8edf5;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      transition: width 320ms ease;
+    }
+
+    .chart {
+      width: 100%;
+      height: 320px;
+      display: block;
+      overflow: visible;
+    }
+
+    .axis,
+    .grid-line {
+      stroke: #c9d2df;
+      stroke-width: 1;
+    }
+
+    .bar {
+      fill: var(--blue);
+    }
+
+    .bar-label,
+    .tick {
+      fill: var(--muted);
+      font-size: 12px;
+    }
+
+    .empty {
+      color: var(--muted);
+      padding: 28px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: #fbfcfe;
+    }
+
+    @media (max-width: 760px) {
+      header {
+        display: block;
+      }
+
+      .stamp {
+        margin-top: 12px;
+        text-align: left;
+        white-space: normal;
+      }
+
+      .kpis {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1 id="projectName">Poročilo o poteku terenske ankete</h1>
+        <p class="subtle">Kratek pregled ključnih kazalnikov za vodstvo.</p>
+      </div>
+      <div class="stamp">Zadnja osvežitev: <strong id="lastUpdated">-</strong></div>
+    </header>
+
+    <section class="kpis" aria-label="Ključni kazalniki">
+      <div class="tile">
+        <div class="label">Število zbranih anket</div>
+        <div class="value" id="currentN">-</div>
+        <div class="note" id="targetNote">Cilj: -</div>
+      </div>
+      <div class="tile">
+        <div class="label">Dosežen cilj</div>
+        <div class="value" id="percentDone">-</div>
+        <div class="note" id="percentNote">Delež od končnega N</div>
+      </div>
+      <div class="tile">
+        <div class="label">Dni do konca</div>
+        <div class="value" id="daysLeft">-</div>
+        <div class="note" id="endDateNote">Konec zbiranja: -</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Napredek do cilja</h2>
+      <div class="progress-wrap" aria-label="Napredek do cilja">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <p class="note" id="progressText">-</p>
+    </section>
+
+    <section class="section">
+      <h2>Dnevni prirast odgovorov</h2>
+      <div id="chartHost"></div>
+    </section>
+  </main>
+
+  <script>
+    const formatNumber = new Intl.NumberFormat("sl-SI");
+    const formatDate = new Intl.DateTimeFormat("sl-SI", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    });
+
+    function parseCsv(text) {
+      const lines = text.trim().split(/\r?\n/).filter(Boolean);
+      if (!lines.length) return [];
+      const headers = lines[0].split(",").map((h) => h.trim());
+      return lines.slice(1).map((line) => {
+        const values = line.split(",");
+        return headers.reduce((row, header, index) => {
+          row[header] = (values[index] || "").trim();
+          return row;
+        }, {});
+      });
+    }
+
+    function parseDate(value) {
+      const parsed = new Date(`${value}T00:00:00`);
+      return Number.isNaN(parsed.getTime()) ? null : parsed;
+    }
+
+    function daysBetween(start, end) {
+      const oneDay = 24 * 60 * 60 * 1000;
+      return Math.max(0, Math.ceil((end - start) / oneDay));
+    }
+
+    function updateKpis(status) {
+      const current = Number(status.current_n || 0);
+      const target = Number(status.target_n || 0);
+      const endDate = parseDate(status.end_date);
+      const lastUpdated = parseDate(status.last_updated);
+      const percent = target > 0 ? current / target : 0;
+      const percentLabel = `${Math.round(percent * 100)}%`;
+
+      document.title = `${status.project_name || "BSL108"} - porocilo`;
+      document.getElementById("projectName").textContent = status.project_name || "Poročilo o poteku terenske ankete";
+      document.getElementById("lastUpdated").textContent = lastUpdated ? formatDate.format(lastUpdated) : status.last_updated || "-";
+      document.getElementById("currentN").textContent = formatNumber.format(current);
+      document.getElementById("targetNote").textContent = `Cilj: N=${formatNumber.format(target)}`;
+      document.getElementById("percentDone").textContent = percentLabel;
+      document.getElementById("percentNote").textContent = `${formatNumber.format(current)} od ${formatNumber.format(target)} anket`;
+      document.getElementById("endDateNote").textContent = endDate ? `Konec zbiranja: ${formatDate.format(endDate)}` : "Konec zbiranja: -";
+      document.getElementById("daysLeft").textContent = endDate ? formatNumber.format(daysBetween(new Date(), endDate)) : "-";
+
+      const progressWidth = Math.min(100, Math.max(0, percent * 100));
+      document.getElementById("progressBar").style.width = `${progressWidth}%`;
+      document.getElementById("progressText").textContent = `Trenutno je doseženih ${percentLabel} načrtovanega vzorca.`;
+    }
+
+    function renderChart(rows) {
+      const host = document.getElementById("chartHost");
+      const data = rows
+        .map((row) => ({ date: row.date, surveys: Number(row.surveys || 0) }))
+        .filter((row) => row.date && Number.isFinite(row.surveys));
+
+      if (!data.length) {
+        host.innerHTML = '<div class="empty">Za graf dodaj vrstice v daily_progress.csv.</div>';
+        return;
+      }
+
+      const width = 960;
+      const height = 320;
+      const margin = { top: 18, right: 20, bottom: 48, left: 56 };
+      const innerWidth = width - margin.left - margin.right;
+      const innerHeight = height - margin.top - margin.bottom;
+      const maxValue = Math.max(...data.map((row) => row.surveys), 1);
+      const barGap = 8;
+      const barWidth = Math.max(10, (innerWidth - barGap * (data.length - 1)) / data.length);
+
+      const bars = data.map((row, index) => {
+        const barHeight = (row.surveys / maxValue) * innerHeight;
+        const x = margin.left + index * (barWidth + barGap);
+        const y = margin.top + innerHeight - barHeight;
+        const labelY = Math.max(margin.top + 12, y - 8);
+        return `
+          <rect class="bar" x="${x}" y="${y}" width="${barWidth}" height="${barHeight}" rx="3"></rect>
+          <text class="bar-label" x="${x + barWidth / 2}" y="${labelY}" text-anchor="middle">${formatNumber.format(row.surveys)}</text>
+          <text class="tick" x="${x + barWidth / 2}" y="${height - 18}" text-anchor="middle">${row.date.slice(5)}</text>
+        `;
+      }).join("");
+
+      host.innerHTML = `
+        <svg class="chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Dnevni prirast odgovorov">
+          <line class="axis" x1="${margin.left}" y1="${margin.top + innerHeight}" x2="${width - margin.right}" y2="${margin.top + innerHeight}"></line>
+          <line class="axis" x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + innerHeight}"></line>
+          <line class="grid-line" x1="${margin.left}" y1="${margin.top}" x2="${width - margin.right}" y2="${margin.top}"></line>
+          <text class="tick" x="${margin.left - 10}" y="${margin.top + 4}" text-anchor="end">${formatNumber.format(maxValue)}</text>
+          <text class="tick" x="${margin.left - 10}" y="${margin.top + innerHeight + 4}" text-anchor="end">0</text>
+          ${bars}
+        </svg>
+      `;
+    }
+
+    async function init() {
+      const [statusResponse, dailyResponse] = await Promise.all([
+        fetch("status.csv"),
+        fetch("daily_progress.csv")
+      ]);
+      const statusRows = parseCsv(await statusResponse.text());
+      const dailyRows = parseCsv(await dailyResponse.text());
+      updateKpis(statusRows[0] || {});
+      renderChart(dailyRows);
+    }
+
+    init().catch((error) => {
+      document.getElementById("chartHost").innerHTML = `<div class="empty">Podatkov ni bilo mogoče naložiti: ${error.message}</div>`;
+    });
+  </script>
+</body>
+</html>
