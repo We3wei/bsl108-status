@@ -390,6 +390,20 @@
     document.getElementById("statusText").textContent = label;
   }
 
+  function buildProgressRows(daily) {
+    return daily
+      .map(r => ({ date: r.date, surveys: Number(r.surveys || 0) }))
+      .filter(r => r.date && Number.isFinite(r.surveys) && r.surveys >= 0)
+      .sort((a, b) => a.date.localeCompare(b.date))
+      .map((row, index, rows) => {
+        const previous = index > 0 ? rows[index - 1].surveys : 0;
+        return {
+          ...row,
+          delta: Math.max(0, row.surveys - previous)
+        };
+      });
+  }
+
   // ── MAIN UPDATE ──────────────────────────────────────────────────────────
   function update(status, daily) {
     const current  = Number(status.current_n || 0);
@@ -418,17 +432,15 @@
     document.getElementById("daysLeft").textContent = daysLeft !== null ? N.format(daysLeft) : "–";
 
     // ── PACE & PROJECTION ──
-    const data = daily
-      .map(r => ({ date: r.date, surveys: Number(r.surveys || 0) }))
-      .filter(r => r.date && Number.isFinite(r.surveys) && r.surveys >= 0)
-      .sort((a, b) => a.date.localeCompare(b.date));
+    const data = buildProgressRows(daily);
 
     let avgPace = null, neededPace = null, projEnd = null;
     let statusCls = "gray", statusLbl = "Ni podatkov";
 
     if (data.length > 0) {
-      const totalDaily = data.reduce((s, r) => s + r.surveys, 0);
-      avgPace = totalDaily / data.length;
+      const usableDeltas = data.length > 1 ? data.slice(1) : data;
+      const totalDelta = usableDeltas.reduce((s, r) => s + r.delta, 0);
+      avgPace = totalDelta / usableDeltas.length;
 
       const remaining = target - current;
 
@@ -488,21 +500,15 @@
   function renderChart(daily) {
     const host = document.getElementById("chartHost");
 
-    const data = daily
-      .map(r => ({ date: r.date, surveys: Number(r.surveys || 0) }))
-      .filter(r => r.date && Number.isFinite(r.surveys))
-      .sort((a, b) => a.date.localeCompare(b.date));
+    const data = buildProgressRows(daily);
 
     if (!data.length) {
       host.innerHTML = '<div class="empty-chart">Za graf dodaj vrstice v daily_progress.csv.</div>';
       return;
     }
 
-    // Cumulative
-    let cum = 0;
-    data.forEach(d => { cum += d.surveys; d.cumul = cum; });
-    const maxCumul = cum || 1;
-    const maxDaily = Math.max(...data.map(d => d.surveys), 1);
+    const maxCumul = Math.max(...data.map(d => d.surveys), 1);
+    const maxDaily = Math.max(...data.map(d => d.delta), 1);
 
     const W = 960, H = 300;
     const m = { top: 24, right: 72, bottom: 46, left: 58 };
@@ -538,7 +544,7 @@
 
     // Bars
     const bars = data.map((d, i) => {
-      const bH = (d.surveys / maxDaily) * iH;
+      const bH = (d.delta / maxDaily) * iH;
       const x  = m.left + i * (barW + barGap);
       const y  = m.top + iH - bH;
       const labelY = Math.max(m.top + 13, y - 6);
@@ -546,15 +552,15 @@
         <rect x="${x}" y="${y}" width="${barW}" height="${bH}" rx="3"
           fill="#1d64d8" opacity=".75"></rect>
         <text x="${x + barW / 2}" y="${labelY}" text-anchor="middle"
-          fill="#4b5d75" font-size="11" font-family="DM Sans,Arial,sans-serif">${N.format(d.surveys)}</text>
+          fill="#4b5d75" font-size="11" font-family="DM Sans,Arial,sans-serif">${N.format(d.delta)}</text>
         <text x="${x + barW / 2}" y="${H - 12}" text-anchor="middle"
           fill="#8896ab" font-size="11" font-family="DM Sans,Arial,sans-serif">${d.date.slice(5)}</text>`;
     }).join("");
 
     // Cumulative line + dots
-    const linePoints = data.map((d, i) => `${xCenter(i)},${yCumul(d.cumul)}`).join(" ");
+    const linePoints = data.map((d, i) => `${xCenter(i)},${yCumul(d.surveys)}`).join(" ");
     const dots = data.map((d, i) => {
-      const cx = xCenter(i), cy = yCumul(d.cumul);
+      const cx = xCenter(i), cy = yCumul(d.surveys);
       return `
         <circle cx="${cx}" cy="${cy}" r="5" fill="white" stroke="#16803c" stroke-width="2.5"></circle>
         <circle cx="${cx}" cy="${cy}" r="2.5" fill="#16803c"></circle>`;
