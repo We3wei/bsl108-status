@@ -3,341 +3,621 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BSL108 - porocilo o poteku</title>
+  <title>BSL108 – poročilo o poteku</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      color-scheme: light;
-      --bg: #f7f8fb;
-      --panel: #ffffff;
-      --text: #182033;
-      --muted: #647087;
-      --line: #dbe1ea;
-      --blue: #1f6feb;
-      --green: #22863a;
-      --amber: #b7791f;
-      --shadow: 0 12px 28px rgba(24, 32, 51, 0.08);
+      --bg:      #f3f5f9;
+      --panel:   #ffffff;
+      --text:    #111827;
+      --muted:   #6b7b93;
+      --line:    #e0e5ee;
+      --blue:    #1d64d8;
+      --green:   #16803c;
+      --amber:   #b45309;
+      --red:     #b91c1c;
+      --blue-bg: #eff4ff;
+      --shadow:  0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(17,24,39,.06);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      margin: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.5;
+      font-family: "DM Sans", Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
     }
 
     main {
-      width: min(1120px, calc(100% - 32px));
+      width: min(1140px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 32px 0 44px;
+      padding: 36px 0 56px;
     }
 
+    /* ─── HEADER ─────────────────────────────── */
     header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-end;
+      align-items: flex-start;
       gap: 24px;
-      padding: 12px 0 24px;
+      padding-bottom: 24px;
       border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
     }
 
-    h1 {
-      margin: 0;
-      font-size: clamp(28px, 4vw, 42px);
-      font-weight: 750;
-      letter-spacing: 0;
+    .header-title h1 {
+      font-size: clamp(22px, 3vw, 34px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
     }
 
-    .subtle {
-      margin: 6px 0 0;
+    .header-title p {
       color: var(--muted);
-      font-size: 15px;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .header-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
     .stamp {
       color: var(--muted);
-      font-size: 14px;
-      text-align: right;
-      white-space: nowrap;
+      font-size: 13px;
     }
 
+    /* ─── STATUS BADGE ───────────────────────── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 13px 5px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border: 1.5px solid transparent;
+      transition: background .2s, color .2s;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .badge.green  { background: #dcfce7; color: var(--green); border-color: #bbf7d0; }
+    .badge.amber  { background: #fef3c7; color: var(--amber); border-color: #fde68a; }
+    .badge.red    { background: #fee2e2; color: var(--red);   border-color: #fecaca; }
+    .badge.gray   { background: #f1f3f8; color: var(--muted); border-color: var(--line); }
+    .badge.green .badge-dot { background: var(--green); }
+    .badge.amber .badge-dot { background: var(--amber); }
+    .badge.red   .badge-dot { background: var(--red); }
+    .badge.gray  .badge-dot { background: var(--muted); }
+
+    /* ─── KPI GRID ───────────────────────────── */
     .kpis {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin: 24px 0;
-    }
-
-    .tile,
-    .section {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      box-shadow: var(--shadow);
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 14px;
     }
 
     .tile {
-      min-height: 150px;
-      padding: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      padding: 20px 22px 18px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
     }
 
-    .label {
-      color: var(--muted);
-      font-size: 14px;
+    .tile-label {
+      font-size: 11.5px;
       font-weight: 700;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .value {
-      margin-top: 12px;
-      font-size: clamp(38px, 6vw, 62px);
-      font-weight: 800;
-      line-height: 1;
-      letter-spacing: 0;
-    }
-
-    .note {
-      margin-top: 12px;
       color: var(--muted);
-      font-size: 14px;
     }
 
+    .tile-value {
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.05;
+      margin-top: 10px;
+      color: var(--text);
+    }
+
+    .tile-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 9px;
+      line-height: 1.45;
+    }
+
+    .tile-note strong {
+      color: var(--text);
+    }
+
+    .pace-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 9px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .chip.current  { background: var(--blue-bg); color: var(--blue); }
+    .chip.needed   { background: #fef3c7; color: var(--amber); }
+    .chip.ok       { background: #dcfce7; color: var(--green); }
+    .chip.warn     { background: #fee2e2; color: var(--red); }
+
+    /* ─── SECTION PANELS ─────────────────────── */
     .section {
-      padding: 22px;
-      margin-top: 18px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      padding: 22px 24px;
+      margin-top: 14px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 14px;
     }
 
     .section h2 {
-      margin: 0 0 16px;
-      font-size: 22px;
-      letter-spacing: 0;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
     }
 
-    .progress-wrap {
-      height: 18px;
-      border-radius: 999px;
-      background: #e8edf5;
-      overflow: hidden;
-      border: 1px solid var(--line);
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--blue), var(--green));
-      transition: width 320ms ease;
-    }
-
-    .chart {
-      width: 100%;
-      height: 320px;
-      display: block;
-      overflow: visible;
-    }
-
-    .axis,
-    .grid-line {
-      stroke: #c9d2df;
-      stroke-width: 1;
-    }
-
-    .bar {
-      fill: var(--blue);
-    }
-
-    .bar-label,
-    .tick {
-      fill: var(--muted);
-      font-size: 12px;
-    }
-
-    .empty {
+    .section-note {
+      font-size: 13px;
       color: var(--muted);
-      padding: 28px;
-      border: 1px dashed var(--line);
-      border-radius: 8px;
-      background: #fbfcfe;
     }
 
-    @media (max-width: 760px) {
-      header {
-        display: block;
-      }
+    /* ─── PROGRESS BAR ───────────────────────── */
+    .progress-track {
+      height: 16px;
+      border-radius: 999px;
+      background: #eaecf5;
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
 
-      .stamp {
-        margin-top: 12px;
-        text-align: left;
-        white-space: normal;
-      }
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      transition: width 400ms cubic-bezier(.4,0,.2,1);
+    }
 
-      .kpis {
-        grid-template-columns: 1fr;
-      }
+    .progress-fill.green { background: linear-gradient(90deg, var(--blue), #0e9f6e); }
+    .progress-fill.amber { background: linear-gradient(90deg, var(--blue), var(--amber)); }
+    .progress-fill.red   { background: linear-gradient(90deg, #e05c4b, var(--red)); }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ─── CHART ──────────────────────────────── */
+    .chart-legend {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .legend-bar  { width: 13px; height: 10px; border-radius: 3px; background: var(--blue); opacity: .75; }
+    .legend-line { width: 20px; height: 3px; border-radius: 2px; background: var(--green); }
+    .legend-dot  { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+
+    .chart-svg {
+      width: 100%;
+      overflow: visible;
+      display: block;
+    }
+
+    .empty-chart {
+      color: var(--muted);
+      font-size: 14px;
+      padding: 28px 20px;
+      border: 1.5px dashed var(--line);
+      border-radius: 8px;
+      background: #fafbfd;
+      text-align: center;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────── */
+    @media (max-width: 900px) {
+      .kpis { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 540px) {
+      header { flex-direction: column; }
+      .header-meta { align-items: flex-start; }
+      .kpis { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <header>
-      <div>
-        <h1 id="projectName">Poročilo o poteku terenske ankete</h1>
-        <p class="subtle">Kratek pregled ključnih kazalnikov za vodstvo.</p>
-      </div>
-      <div class="stamp">Zadnja osvežitev: <strong id="lastUpdated">-</strong></div>
-    </header>
+<main>
 
-    <section class="kpis" aria-label="Ključni kazalniki">
-      <div class="tile">
-        <div class="label">Število zbranih anket</div>
-        <div class="value" id="currentN">-</div>
-        <div class="note" id="targetNote">Cilj: -</div>
-      </div>
-      <div class="tile">
-        <div class="label">Dosežen cilj</div>
-        <div class="value" id="percentDone">-</div>
-        <div class="note" id="percentNote">Delež od končnega N</div>
-      </div>
-      <div class="tile">
-        <div class="label">Dni do konca</div>
-        <div class="value" id="daysLeft">-</div>
-        <div class="note" id="endDateNote">Konec zbiranja: -</div>
-      </div>
-    </section>
+  <header>
+    <div class="header-title">
+      <h1 id="projectName">Poročilo o poteku terenske ankete</h1>
+      <p>Kratek pregled ključnih kazalnikov za vodstvo.</p>
+    </div>
+    <div class="header-meta">
+      <span class="badge gray" id="statusBadge">
+        <span class="badge-dot"></span>
+        <span id="statusText">Nalagam…</span>
+      </span>
+      <span class="stamp">Zadnja osvežitev: <strong id="lastUpdated">–</strong></span>
+    </div>
+  </header>
 
-    <section class="section">
+  <!-- ── KPI TILES ── -->
+  <div class="kpis">
+
+    <div class="tile">
+      <div class="tile-label">Zbrane ankete</div>
+      <div class="tile-value" id="currentN">–</div>
+      <div class="tile-note" id="targetNote">Cilj: –</div>
+    </div>
+
+    <div class="tile">
+      <div class="tile-label">Dosežen cilj</div>
+      <div class="tile-value" id="percentDone">–</div>
+      <div class="tile-note" id="percentNote">–</div>
+    </div>
+
+    <div class="tile">
+      <div class="tile-label">Dnevni tempo</div>
+      <div class="tile-value" id="currentPace">–</div>
+      <div class="pace-row" id="paceRow">
+        <span class="tile-note">Podatkov ni dovolj.</span>
+      </div>
+    </div>
+
+    <div class="tile">
+      <div class="tile-label">Dni do konca</div>
+      <div class="tile-value" id="daysLeft">–</div>
+      <div class="tile-note" id="projectionNote">Projekcija zaključka: –</div>
+    </div>
+
+  </div>
+
+  <!-- ── PROGRESS ── -->
+  <div class="section">
+    <div class="section-header">
       <h2>Napredek do cilja</h2>
-      <div class="progress-wrap" aria-label="Napredek do cilja">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
-      <p class="note" id="progressText">-</p>
-    </section>
+      <span class="section-note" id="progressLabel">–</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill green" id="progressFill"></div>
+    </div>
+    <div class="progress-meta">
+      <span id="progressLeft">0 %</span>
+      <span id="progressRight">N = –</span>
+    </div>
+  </div>
 
-    <section class="section">
-      <h2>Dnevni prirast odgovorov</h2>
-      <div id="chartHost"></div>
-    </section>
-  </main>
+  <!-- ── CHART ── -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Dnevni prirast in kumulativni napredek</h2>
+    </div>
+    <div class="chart-legend">
+      <div class="legend-item"><div class="legend-bar"></div> Dnevni prirast</div>
+      <div class="legend-item"><div class="legend-line"></div><div class="legend-dot"></div> Kumulativno</div>
+    </div>
+    <div id="chartHost"></div>
+  </div>
 
-  <script>
-    const formatNumber = new Intl.NumberFormat("sl-SI");
-    const formatDate = new Intl.DateTimeFormat("sl-SI", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric"
+</main>
+
+<script>
+  const N  = new Intl.NumberFormat("sl-SI");
+  const D  = new Intl.DateTimeFormat("sl-SI", { day: "2-digit", month: "2-digit", year: "numeric" });
+
+  function parseCsv(txt) {
+    const lines = txt.trim().split(/\r?\n/).filter(Boolean);
+    if (!lines.length) return [];
+    const hdrs = lines[0].split(",").map(h => h.trim());
+    return lines.slice(1).map(line => {
+      const vals = line.split(",");
+      return hdrs.reduce((o, h, i) => { o[h] = (vals[i] || "").trim(); return o; }, {});
     });
+  }
 
-    function parseCsv(text) {
-      const lines = text.trim().split(/\r?\n/).filter(Boolean);
-      if (!lines.length) return [];
-      const headers = lines[0].split(",").map((h) => h.trim());
-      return lines.slice(1).map((line) => {
-        const values = line.split(",");
-        return headers.reduce((row, header, index) => {
-          row[header] = (values[index] || "").trim();
-          return row;
-        }, {});
-      });
-    }
+  function parseDate(v) {
+    if (!v) return null;
+    const d = new Date(`${v}T00:00:00`);
+    return isNaN(d) ? null : d;
+  }
 
-    function parseDate(value) {
-      const parsed = new Date(`${value}T00:00:00`);
-      return Number.isNaN(parsed.getTime()) ? null : parsed;
-    }
+  function daysBetween(a, b) {
+    return Math.ceil((b - a) / 86400000);
+  }
 
-    function daysBetween(start, end) {
-      const oneDay = 24 * 60 * 60 * 1000;
-      return Math.max(0, Math.ceil((end - start) / oneDay));
-    }
+  function addDays(d, n) {
+    const r = new Date(d); r.setDate(r.getDate() + Math.round(n)); return r;
+  }
 
-    function updateKpis(status) {
-      const current = Number(status.current_n || 0);
-      const target = Number(status.target_n || 0);
-      const endDate = parseDate(status.end_date);
-      const lastUpdated = parseDate(status.last_updated);
-      const percent = target > 0 ? current / target : 0;
-      const percentLabel = `${Math.round(percent * 100)}%`;
+  function setStatus(cls, label) {
+    const b = document.getElementById("statusBadge");
+    b.className = `badge ${cls}`;
+    document.getElementById("statusText").textContent = label;
+  }
 
-      document.title = `${status.project_name || "BSL108"} - porocilo`;
-      document.getElementById("projectName").textContent = status.project_name || "Poročilo o poteku terenske ankete";
-      document.getElementById("lastUpdated").textContent = lastUpdated ? formatDate.format(lastUpdated) : status.last_updated || "-";
-      document.getElementById("currentN").textContent = formatNumber.format(current);
-      document.getElementById("targetNote").textContent = `Cilj: N=${formatNumber.format(target)}`;
-      document.getElementById("percentDone").textContent = percentLabel;
-      document.getElementById("percentNote").textContent = `${formatNumber.format(current)} od ${formatNumber.format(target)} anket`;
-      document.getElementById("endDateNote").textContent = endDate ? `Konec zbiranja: ${formatDate.format(endDate)}` : "Konec zbiranja: -";
-      document.getElementById("daysLeft").textContent = endDate ? formatNumber.format(daysBetween(new Date(), endDate)) : "-";
+  // ── MAIN UPDATE ──────────────────────────────────────────────────────────
+  function update(status, daily) {
+    const current  = Number(status.current_n || 0);
+    const target   = Number(status.target_n || 0);
+    const endDate  = parseDate(status.end_date);
+    const lastUpd  = parseDate(status.last_updated);
+    const today    = lastUpd || new Date();
+    const pct      = target > 0 ? current / target : 0;
 
-      const progressWidth = Math.min(100, Math.max(0, percent * 100));
-      document.getElementById("progressBar").style.width = `${progressWidth}%`;
-      document.getElementById("progressText").textContent = `Trenutno je doseženih ${percentLabel} načrtovanega vzorca.`;
-    }
+    // Header / title
+    const projName = status.project_name || "Poročilo o poteku terenske ankete";
+    document.title = `${projName} – poročilo`;
+    document.getElementById("projectName").textContent  = projName;
+    document.getElementById("lastUpdated").textContent  = lastUpd ? D.format(lastUpd) : (status.last_updated || "–");
 
-    function renderChart(rows) {
-      const host = document.getElementById("chartHost");
-      const data = rows
-        .map((row) => ({ date: row.date, surveys: Number(row.surveys || 0) }))
-        .filter((row) => row.date && Number.isFinite(row.surveys));
+    // KPI 1 – zbrane ankete
+    document.getElementById("currentN").textContent    = N.format(current);
+    document.getElementById("targetNote").textContent  = `Cilj: N = ${N.format(target)}`;
 
-      if (!data.length) {
-        host.innerHTML = '<div class="empty">Za graf dodaj vrstice v daily_progress.csv.</div>';
-        return;
+    // KPI 2 – dosežen cilj
+    document.getElementById("percentDone").textContent = `${Math.round(pct * 100)} %`;
+    document.getElementById("percentNote").textContent = `${N.format(current)} od ${N.format(target)} anket`;
+
+    // KPI 4 – dni do konca
+    const daysLeft = endDate ? Math.max(0, daysBetween(today, endDate)) : null;
+    document.getElementById("daysLeft").textContent = daysLeft !== null ? N.format(daysLeft) : "–";
+
+    // ── PACE & PROJECTION ──
+    const data = daily
+      .map(r => ({ date: r.date, surveys: Number(r.surveys || 0) }))
+      .filter(r => r.date && Number.isFinite(r.surveys) && r.surveys >= 0)
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    let avgPace = null, neededPace = null, projEnd = null;
+    let statusCls = "gray", statusLbl = "Ni podatkov";
+
+    if (data.length > 0) {
+      const totalDaily = data.reduce((s, r) => s + r.surveys, 0);
+      avgPace = totalDaily / data.length;
+
+      const remaining = target - current;
+
+      if (daysLeft > 0) neededPace = remaining / daysLeft;
+
+      if (avgPace > 0 && remaining > 0) {
+        projEnd = addDays(today, remaining / avgPace);
+      } else if (remaining <= 0) {
+        projEnd = today;
       }
 
-      const width = 960;
-      const height = 320;
-      const margin = { top: 18, right: 20, bottom: 48, left: 56 };
-      const innerWidth = width - margin.left - margin.right;
-      const innerHeight = height - margin.top - margin.bottom;
-      const maxValue = Math.max(...data.map((row) => row.surveys), 1);
-      const barGap = 8;
-      const barWidth = Math.max(10, (innerWidth - barGap * (data.length - 1)) / data.length);
-
-      const bars = data.map((row, index) => {
-        const barHeight = (row.surveys / maxValue) * innerHeight;
-        const x = margin.left + index * (barWidth + barGap);
-        const y = margin.top + innerHeight - barHeight;
-        const labelY = Math.max(margin.top + 12, y - 8);
-        return `
-          <rect class="bar" x="${x}" y="${y}" width="${barWidth}" height="${barHeight}" rx="3"></rect>
-          <text class="bar-label" x="${x + barWidth / 2}" y="${labelY}" text-anchor="middle">${formatNumber.format(row.surveys)}</text>
-          <text class="tick" x="${x + barWidth / 2}" y="${height - 18}" text-anchor="middle">${row.date.slice(5)}</text>
-        `;
-      }).join("");
-
-      host.innerHTML = `
-        <svg class="chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Dnevni prirast odgovorov">
-          <line class="axis" x1="${margin.left}" y1="${margin.top + innerHeight}" x2="${width - margin.right}" y2="${margin.top + innerHeight}"></line>
-          <line class="axis" x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + innerHeight}"></line>
-          <line class="grid-line" x1="${margin.left}" y1="${margin.top}" x2="${width - margin.right}" y2="${margin.top}"></line>
-          <text class="tick" x="${margin.left - 10}" y="${margin.top + 4}" text-anchor="end">${formatNumber.format(maxValue)}</text>
-          <text class="tick" x="${margin.left - 10}" y="${margin.top + innerHeight + 4}" text-anchor="end">0</text>
-          ${bars}
-        </svg>
-      `;
+      if (projEnd && endDate) {
+        const lag = daysBetween(endDate, projEnd); // positive = over deadline
+        if (lag <= 0)  { statusCls = "green"; statusLbl = "V planu"; }
+        else if (lag <= 21) { statusCls = "amber"; statusLbl = "Tveganje"; }
+        else           { statusCls = "red";   statusLbl = "Zamuda"; }
+      }
     }
 
-    async function init() {
-      const [statusResponse, dailyResponse] = await Promise.all([
-        fetch("status.csv"),
-        fetch("daily_progress.csv")
-      ]);
-      const statusRows = parseCsv(await statusResponse.text());
-      const dailyRows = parseCsv(await dailyResponse.text());
-      updateKpis(statusRows[0] || {});
+    setStatus(statusCls, statusLbl);
+
+    // KPI 3 – tempo
+    document.getElementById("currentPace").textContent =
+      avgPace !== null ? `${N.format(Math.round(avgPace))}/d` : "–";
+
+    const paceRow = document.getElementById("paceRow");
+    if (avgPace !== null && neededPace !== null) {
+      const gap = Math.round(neededPace - avgPace);
+      const gapCls = gap <= 0 ? "ok" : "warn";
+      const gapTxt = gap <= 0
+        ? `✓ ${N.format(Math.abs(gap))}/d nad ciljem`
+        : `▲ ${N.format(gap)}/d pod ciljem`;
+      paceRow.innerHTML =
+        `<span class="chip needed">Potrebno: ${N.format(Math.round(neededPace))}/d</span>` +
+        `<span class="chip ${gapCls}">${gapTxt}</span>`;
+    } else {
+      paceRow.innerHTML = `<span class="tile-note" style="margin-top:0">Premalo podatkov za projekcijo.</span>`;
+    }
+
+    // Projection note
+    document.getElementById("projectionNote").innerHTML = projEnd
+      ? `Projekcija zaključka: <strong>${D.format(projEnd)}</strong>`
+      : "Projekcija zaključka: –";
+
+    // ── PROGRESS BAR ──
+    const pctW = Math.min(100, Math.max(0, pct * 100));
+    const fill = document.getElementById("progressFill");
+    fill.style.width = `${pctW}%`;
+    fill.className = `progress-fill ${statusCls === "gray" ? "green" : statusCls}`;
+    document.getElementById("progressLabel").textContent =
+      `${N.format(current)} / ${N.format(target)}`;
+    document.getElementById("progressLeft").textContent = `${Math.round(pct * 100)} %`;
+    document.getElementById("progressRight").textContent = `Cilj N = ${N.format(target)}`;
+  }
+
+  // ── CHART ────────────────────────────────────────────────────────────────
+  function renderChart(daily) {
+    const host = document.getElementById("chartHost");
+
+    const data = daily
+      .map(r => ({ date: r.date, surveys: Number(r.surveys || 0) }))
+      .filter(r => r.date && Number.isFinite(r.surveys))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    if (!data.length) {
+      host.innerHTML = '<div class="empty-chart">Za graf dodaj vrstice v daily_progress.csv.</div>';
+      return;
+    }
+
+    // Cumulative
+    let cum = 0;
+    data.forEach(d => { cum += d.surveys; d.cumul = cum; });
+    const maxCumul = cum || 1;
+    const maxDaily = Math.max(...data.map(d => d.surveys), 1);
+
+    const W = 960, H = 300;
+    const m = { top: 24, right: 72, bottom: 46, left: 58 };
+    const iW = W - m.left - m.right;
+    const iH = H - m.top - m.bottom;
+
+    const n = data.length;
+    const barGap = n > 1 ? Math.min(8, iW / (n * 5)) : 0;
+    const barW   = Math.max(6, (iW - barGap * Math.max(n - 1, 0)) / n);
+
+    const xCenter = i => m.left + i * (barW + barGap) + barW / 2;
+    const yDaily  = v => m.top + iH - (v / maxDaily) * iH;
+    const yCumul  = v => m.top + iH - (v / maxCumul) * iH;
+
+    // Grid lines (3 levels for daily axis)
+    const gridLevels = [0, 0.5, 1].map(f => {
+      const v = Math.round(maxDaily * f);
+      const y = yDaily(v);
+      return `
+        <line x1="${m.left}" y1="${y}" x2="${W - m.right}" y2="${y}"
+          stroke="#dde2ec" stroke-width="1" ${f > 0 ? 'stroke-dasharray="4 4"' : ''}/>
+        <text x="${m.left - 8}" y="${y + 4}" text-anchor="end"
+          fill="#8896ab" font-size="11" font-family="DM Sans,Arial,sans-serif">${N.format(v)}</text>`;
+    }).join("");
+
+    // Right axis ticks (cumulative)
+    const rightTicks = [0, 0.5, 1].map(f => {
+      const v = Math.round(maxCumul * f);
+      const y = yCumul(v);
+      return `<text x="${W - m.right + 10}" y="${y + 4}" text-anchor="start"
+        fill="#16803c" opacity=".7" font-size="11" font-family="DM Sans,Arial,sans-serif">${N.format(v)}</text>`;
+    }).join("");
+
+    // Bars
+    const bars = data.map((d, i) => {
+      const bH = (d.surveys / maxDaily) * iH;
+      const x  = m.left + i * (barW + barGap);
+      const y  = m.top + iH - bH;
+      const labelY = Math.max(m.top + 13, y - 6);
+      return `
+        <rect x="${x}" y="${y}" width="${barW}" height="${bH}" rx="3"
+          fill="#1d64d8" opacity=".75"></rect>
+        <text x="${x + barW / 2}" y="${labelY}" text-anchor="middle"
+          fill="#4b5d75" font-size="11" font-family="DM Sans,Arial,sans-serif">${N.format(d.surveys)}</text>
+        <text x="${x + barW / 2}" y="${H - 12}" text-anchor="middle"
+          fill="#8896ab" font-size="11" font-family="DM Sans,Arial,sans-serif">${d.date.slice(5)}</text>`;
+    }).join("");
+
+    // Cumulative line + dots
+    const linePoints = data.map((d, i) => `${xCenter(i)},${yCumul(d.cumul)}`).join(" ");
+    const dots = data.map((d, i) => {
+      const cx = xCenter(i), cy = yCumul(d.cumul);
+      return `
+        <circle cx="${cx}" cy="${cy}" r="5" fill="white" stroke="#16803c" stroke-width="2.5"></circle>
+        <circle cx="${cx}" cy="${cy}" r="2.5" fill="#16803c"></circle>`;
+    }).join("");
+
+    host.innerHTML = `
+      <svg class="chart-svg" viewBox="0 0 ${W} ${H}"
+           role="img" aria-label="Dnevni prirast in kumulativni napredek">
+
+        <!-- grid -->
+        ${gridLevels}
+
+        <!-- right axis line -->
+        <line x1="${W - m.right}" y1="${m.top}" x2="${W - m.right}" y2="${m.top + iH}"
+          stroke="#16803c" opacity=".2" stroke-width="1"/>
+        ${rightTicks}
+
+        <!-- left axis -->
+        <line x1="${m.left}" y1="${m.top}" x2="${m.left}" y2="${m.top + iH}"
+          stroke="#c6cdd9" stroke-width="1"/>
+
+        <!-- bottom axis -->
+        <line x1="${m.left}" y1="${m.top + iH}" x2="${W - m.right}" y2="${m.top + iH}"
+          stroke="#c6cdd9" stroke-width="1"/>
+
+        <!-- bars -->
+        ${bars}
+
+        <!-- cumulative line -->
+        ${n > 1 ? `<polyline points="${linePoints}"
+          fill="none" stroke="#16803c" stroke-width="2.5"
+          stroke-linejoin="round" stroke-linecap="round"/>` : ""}
+
+        <!-- dots -->
+        ${dots}
+
+        <!-- axis labels -->
+        <text x="${m.left - 36}" y="${m.top + iH / 2}" text-anchor="middle"
+          fill="#8896ab" font-size="11" font-family="DM Sans,Arial,sans-serif"
+          transform="rotate(-90, ${m.left - 36}, ${m.top + iH / 2})">Dnevno</text>
+        <text x="${W - m.right + 48}" y="${m.top + iH / 2}" text-anchor="middle"
+          fill="#16803c" opacity=".7" font-size="11" font-family="DM Sans,Arial,sans-serif"
+          transform="rotate(90, ${W - m.right + 48}, ${m.top + iH / 2})">Kumulativno</text>
+      </svg>`;
+  }
+
+  // ── INIT ─────────────────────────────────────────────────────────────────
+  async function init() {
+    try {
+      const [sr, dr] = await Promise.all([fetch("status.csv"), fetch("daily_progress.csv")]);
+      if (!sr.ok || !dr.ok) throw new Error("Napaka pri nalaganju CSV datotek.");
+      const statusRows = parseCsv(await sr.text());
+      const dailyRows  = parseCsv(await dr.text());
+      update(statusRows[0] || {}, dailyRows);
       renderChart(dailyRows);
+    } catch (err) {
+      document.getElementById("chartHost").innerHTML =
+        `<div class="empty-chart">Podatkov ni bilo mogoče naložiti: ${err.message}</div>`;
+      setStatus("gray", "Napaka");
     }
+  }
 
-    init().catch((error) => {
-      document.getElementById("chartHost").innerHTML = `<div class="empty">Podatkov ni bilo mogoče naložiti: ${error.message}</div>`;
-    });
-  </script>
+  init();
+</script>
 </body>
 </html>
