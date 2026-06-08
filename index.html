@@ -9,21 +9,18 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:      #f3f5f9;
-      --panel:   #ffffff;
-      --text:    #111827;
-      --muted:   #6b7b93;
-      --line:    #e0e5ee;
-      --blue:    #1d64d8;
-      --green:   #16803c;
-      --amber:   #b45309;
-      --red:     #b91c1c;
-      --blue-bg: #eff4ff;
-      --shadow:  0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(17,24,39,.06);
+      --bg:       #f3f5f9;
+      --panel:    #ffffff;
+      --text:     #111827;
+      --muted:    #6b7b93;
+      --line:     #e0e5ee;
+      --blue:     #1d64d8;
+      --green:    #16803c;
+      --amber:    #b45309;
+      --red:      #b91c1c;
+      --shadow:   0 1px 3px rgba(0,0,0,.05), 0 8px 24px rgba(17,24,39,.06);
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       background: var(--bg);
       color: var(--text);
@@ -32,247 +29,171 @@
       line-height: 1.55;
       -webkit-font-smoothing: antialiased;
     }
-
     main {
-      width: min(1140px, calc(100% - 32px));
+      width: min(1160px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 36px 0 56px;
+      padding: 36px 0 60px;
     }
 
-    /* ─── HEADER ─────────────────────────────── */
+    /* ── HEADER ─────────────────────────────────── */
     header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       gap: 24px;
-      padding-bottom: 24px;
+      padding-bottom: 22px;
       border-bottom: 1px solid var(--line);
-      margin-bottom: 24px;
+      margin-bottom: 18px;
     }
-
     .header-title h1 {
-      font-size: clamp(22px, 3vw, 34px);
+      font-size: clamp(20px, 2.8vw, 32px);
       font-weight: 800;
-      letter-spacing: -0.5px;
+      letter-spacing: -.5px;
       line-height: 1.2;
     }
-
-    .header-title p {
-      color: var(--muted);
-      font-size: 14px;
-      margin-top: 5px;
-    }
-
+    .header-title p { color: var(--muted); font-size: 14px; margin-top: 4px; }
     .header-meta {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
-      flex-shrink: 0;
+      display: flex; flex-direction: column;
+      align-items: flex-end; gap: 9px; flex-shrink: 0;
     }
+    .stamp { color: var(--muted); font-size: 13px; }
 
-    .stamp {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    /* ─── STATUS BADGE ───────────────────────── */
+    /* ── BADGE ──────────────────────────────────── */
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 5px 13px 5px 10px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 5px 13px 5px 10px; border-radius: 999px;
+      font-size: 13px; font-weight: 700; letter-spacing: .02em;
       border: 1.5px solid transparent;
-      transition: background .2s, color .2s;
     }
+    .badge-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .badge.green { background:#dcfce7; color:var(--green); border-color:#bbf7d0; }
+    .badge.amber { background:#fef3c7; color:var(--amber); border-color:#fde68a; }
+    .badge.red   { background:#fee2e2; color:var(--red);   border-color:#fecaca; }
+    .badge.gray  { background:#f1f3f8; color:var(--muted); border-color:var(--line); }
+    .badge.green .badge-dot { background:var(--green); }
+    .badge.amber .badge-dot { background:var(--amber); }
+    .badge.red   .badge-dot { background:var(--red); }
+    .badge.gray  .badge-dot { background:var(--muted); }
 
-    .badge-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      flex-shrink: 0;
+    /* ── EXECUTIVE SUMMARY ──────────────────────── */
+    .summary-box {
+      border-radius: 10px; padding: 15px 20px;
+      font-size: 15px; font-weight: 500;
+      border: 1.5px solid transparent;
+      margin-bottom: 14px;
+      line-height: 1.5;
     }
+    .summary-box.green { background:#f0fdf4; border-color:#bbf7d0; color:#14532d; }
+    .summary-box.amber { background:#fffbeb; border-color:#fde68a; color:#78350f; }
+    .summary-box.red   { background:#fff1f2; border-color:#fecaca; color:#7f1d1d; }
+    .summary-box.gray  { background:#f8fafc; border-color:var(--line); color:var(--muted); }
+    .summary-box strong { font-weight: 800; }
 
-    .badge.green  { background: #dcfce7; color: var(--green); border-color: #bbf7d0; }
-    .badge.amber  { background: #fef3c7; color: var(--amber); border-color: #fde68a; }
-    .badge.red    { background: #fee2e2; color: var(--red);   border-color: #fecaca; }
-    .badge.gray   { background: #f1f3f8; color: var(--muted); border-color: var(--line); }
-    .badge.green .badge-dot { background: var(--green); }
-    .badge.amber .badge-dot { background: var(--amber); }
-    .badge.red   .badge-dot { background: var(--red); }
-    .badge.gray  .badge-dot { background: var(--muted); }
-
-    /* ─── KPI GRID ───────────────────────────── */
+    /* ── KPI GRID ───────────────────────────────── */
     .kpis {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 14px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
     }
-
     .tile {
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 10px;
       box-shadow: var(--shadow);
-      padding: 20px 22px 18px;
-      display: flex;
-      flex-direction: column;
+      padding: 18px 20px 16px;
+      display: flex; flex-direction: column;
     }
-
     .tile-label {
-      font-size: 11.5px;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--muted);
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .07em; text-transform: uppercase; color: var(--muted);
     }
-
     .tile-value {
-      font-size: clamp(32px, 4vw, 48px);
-      font-weight: 800;
-      letter-spacing: -1px;
-      line-height: 1.05;
-      margin-top: 10px;
-      color: var(--text);
+      font-size: clamp(28px, 3.2vw, 44px);
+      font-weight: 800; letter-spacing: -1px; line-height: 1.05;
+      margin-top: 9px; color: var(--text);
     }
-
-    .tile-note {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 9px;
-      line-height: 1.45;
-    }
-
-    .tile-note strong {
-      color: var(--text);
-    }
-
-    .pace-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 9px;
-      flex-wrap: wrap;
-    }
-
+    .tile-note { font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.45; }
+    .tile-note strong { color: var(--text); }
     .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 2px 8px;
-      border-radius: 5px;
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1.6;
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; border-radius: 5px;
+      font-size: 11.5px; font-weight: 700; line-height: 1.6;
     }
+    .chip.ok    { background:#dcfce7; color:var(--green); }
+    .chip.warn  { background:#fee2e2; color:var(--red); }
+    .chip.info  { background:#eff4ff; color:var(--blue); }
+    .chip.need  { background:#fef3c7; color:var(--amber); }
+    .pace-row   { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; }
 
-    .chip.current  { background: var(--blue-bg); color: var(--blue); }
-    .chip.needed   { background: #fef3c7; color: var(--amber); }
-    .chip.ok       { background: #dcfce7; color: var(--green); }
-    .chip.warn     { background: #fee2e2; color: var(--red); }
-
-    /* ─── SECTION PANELS ─────────────────────── */
+    /* ── PANELS ─────────────────────────────────── */
     .section {
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 10px;
       box-shadow: var(--shadow);
-      padding: 22px 24px;
-      margin-top: 14px;
+      padding: 20px 22px;
+      margin-top: 12px;
     }
-
-    .section-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 14px;
+    .section-head {
+      display: flex; align-items: baseline;
+      justify-content: space-between; margin-bottom: 14px;
     }
+    .section-head h2 { font-size: 16px; font-weight: 700; letter-spacing: -.2px; }
+    .section-sub { font-size: 13px; color: var(--muted); }
 
-    .section h2 {
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: -0.2px;
-    }
-
-    .section-note {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    /* ─── PROGRESS BAR ───────────────────────── */
+    /* ── PROGRESS BAR ───────────────────────────── */
+    .progress-outer { position: relative; margin-bottom: 6px; }
     .progress-track {
-      height: 16px;
-      border-radius: 999px;
-      background: #eaecf5;
-      border: 1px solid var(--line);
-      overflow: hidden;
+      height: 16px; border-radius: 999px;
+      background: #eaecf5; border: 1px solid var(--line); overflow: visible;
+      position: relative;
     }
-
     .progress-fill {
-      height: 100%;
-      width: 0;
-      border-radius: 999px;
-      transition: width 400ms cubic-bezier(.4,0,.2,1);
+      height: 100%; border-radius: 999px;
+      width: 0; transition: width 400ms cubic-bezier(.4,0,.2,1);
+      position: relative; z-index: 1;
     }
-
-    .progress-fill.green { background: linear-gradient(90deg, var(--blue), #0e9f6e); }
-    .progress-fill.amber { background: linear-gradient(90deg, var(--blue), var(--amber)); }
-    .progress-fill.red   { background: linear-gradient(90deg, #e05c4b, var(--red)); }
-
+    .progress-fill.green { background: linear-gradient(90deg,var(--blue),#0e9f6e); }
+    .progress-fill.amber { background: linear-gradient(90deg,var(--blue),var(--amber)); }
+    .progress-fill.red   { background: linear-gradient(90deg,#e05c4b,var(--red)); }
+    /* milestone markers */
+    .milestone {
+      position: absolute; top: -4px;
+      width: 2px; height: 24px;
+      background: #c0c9d8; border-radius: 1px; z-index: 2;
+    }
+    .milestone-label {
+      position: absolute; top: 22px;
+      font-size: 10.5px; color: var(--muted);
+      transform: translateX(-50%); white-space: nowrap;
+    }
     .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
-      font-size: 13px;
-      color: var(--muted);
+      display: flex; justify-content: space-between;
+      font-size: 12.5px; color: var(--muted); margin-top: 18px;
     }
 
-    /* ─── CHART ──────────────────────────────── */
-    .chart-legend {
-      display: flex;
-      gap: 18px;
-      margin-bottom: 12px;
-    }
+    /* ── TIMELINE ───────────────────────────────── */
+    .timeline-svg { width: 100%; overflow: visible; display: block; }
 
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .legend-bar  { width: 13px; height: 10px; border-radius: 3px; background: var(--blue); opacity: .75; }
-    .legend-line { width: 20px; height: 3px; border-radius: 2px; background: var(--green); }
-    .legend-dot  { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
-
-    .chart-svg {
-      width: 100%;
-      overflow: visible;
-      display: block;
-    }
-
+    /* ── CHART ──────────────────────────────────── */
+    .chart-legend { display:flex; gap:18px; margin-bottom:12px; flex-wrap:wrap; }
+    .legend-item  { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); }
+    .l-bar  { width:13px; height:10px; border-radius:3px; background:var(--blue); opacity:.75; }
+    .l-line { width:20px; height:3px; border-radius:2px; background:var(--green); }
+    .l-target { width:20px; height:0; border-top:2.5px dashed #9ba8bb; }
+    .l-dot  { width:8px; height:8px; border-radius:50%; background:var(--green); }
+    .chart-svg { width:100%; overflow:visible; display:block; }
     .empty-chart {
-      color: var(--muted);
-      font-size: 14px;
-      padding: 28px 20px;
-      border: 1.5px dashed var(--line);
-      border-radius: 8px;
-      background: #fafbfd;
-      text-align: center;
+      color:var(--muted); font-size:14px;
+      padding:28px 20px; border:1.5px dashed var(--line);
+      border-radius:8px; background:#fafbfd; text-align:center;
     }
 
-    /* ─── RESPONSIVE ─────────────────────────── */
-    @media (max-width: 900px) {
-      .kpis { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 540px) {
+    /* ── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 960px) { .kpis { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 620px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) {
       header { flex-direction: column; }
       .header-meta { align-items: flex-start; }
       .kpis { grid-template-columns: 1fr; }
@@ -296,45 +217,48 @@
     </div>
   </header>
 
-  <!-- ── KPI TILES ── -->
-  <div class="kpis">
+  <!-- Executive summary -->
+  <div class="summary-box gray" id="summaryBox">Nalagam podatke…</div>
 
+  <!-- KPI tiles -->
+  <div class="kpis">
     <div class="tile">
       <div class="tile-label">Zbrane ankete</div>
       <div class="tile-value" id="currentN">–</div>
       <div class="tile-note" id="targetNote">Cilj: –</div>
     </div>
-
+    <div class="tile">
+      <div class="tile-label">Preostale ankete</div>
+      <div class="tile-value" id="remainingN">–</div>
+      <div class="tile-note" id="remainingNote">do cilja N = –</div>
+    </div>
     <div class="tile">
       <div class="tile-label">Dosežen cilj</div>
       <div class="tile-value" id="percentDone">–</div>
       <div class="tile-note" id="percentNote">–</div>
     </div>
-
     <div class="tile">
       <div class="tile-label">Dnevni tempo</div>
       <div class="tile-value" id="currentPace">–</div>
-      <div class="pace-row" id="paceRow">
-        <span class="tile-note">Podatkov ni dovolj.</span>
-      </div>
+      <div class="pace-row" id="paceRow"><span class="tile-note">–</span></div>
     </div>
-
     <div class="tile">
       <div class="tile-label">Dni do konca</div>
       <div class="tile-value" id="daysLeft">–</div>
-      <div class="tile-note" id="projectionNote">Projekcija zaključka: –</div>
+      <div class="tile-note" id="projectionNote">Projekcija: –</div>
     </div>
-
   </div>
 
-  <!-- ── PROGRESS ── -->
+  <!-- Progress bar -->
   <div class="section">
-    <div class="section-header">
+    <div class="section-head">
       <h2>Napredek do cilja</h2>
-      <span class="section-note" id="progressLabel">–</span>
+      <span class="section-sub" id="progressLabel">–</span>
     </div>
-    <div class="progress-track">
-      <div class="progress-fill green" id="progressFill"></div>
+    <div class="progress-outer">
+      <div class="progress-track" id="progressTrack">
+        <div class="progress-fill green" id="progressFill"></div>
+      </div>
     </div>
     <div class="progress-meta">
       <span id="progressLeft">0 %</span>
@@ -342,287 +266,399 @@
     </div>
   </div>
 
-  <!-- ── CHART ── -->
+  <!-- Timeline -->
   <div class="section">
-    <div class="section-header">
-      <h2>Dnevni prirast in kumulativni napredek</h2>
+    <div class="section-head">
+      <h2>Časovnica projekta</h2>
+      <span class="section-sub" id="timelineSub">–</span>
     </div>
+    <div id="timelineHost"></div>
+  </div>
+
+  <!-- Chart -->
+  <div class="section">
+    <div class="section-head"><h2>Dnevni prirast in kumulativni napredek</h2></div>
     <div class="chart-legend">
-      <div class="legend-item"><div class="legend-bar"></div> Dnevni prirast</div>
-      <div class="legend-item"><div class="legend-line"></div><div class="legend-dot"></div> Kumulativno</div>
+      <div class="legend-item"><div class="l-bar"></div> Dnevni prirast</div>
+      <div class="legend-item"><div class="l-line"></div><div class="l-dot"></div> Kumulativno (dejansko)</div>
+      <div class="legend-item" id="targetLegendItem" style="display:none">
+        <div class="l-target"></div> Linearni plan
+      </div>
     </div>
     <div id="chartHost"></div>
   </div>
 
 </main>
-
 <script>
-  const N  = new Intl.NumberFormat("sl-SI");
-  const D  = new Intl.DateTimeFormat("sl-SI", { day: "2-digit", month: "2-digit", year: "numeric" });
+  const N = new Intl.NumberFormat("sl-SI");
+  const D = new Intl.DateTimeFormat("sl-SI", { day:"2-digit", month:"2-digit", year:"numeric" });
+  const Ds = new Intl.DateTimeFormat("sl-SI", { day:"numeric", month:"numeric" });
 
+  /* ── UTILS ──────────────────────────────────────────────────── */
   function parseCsv(txt) {
     const lines = txt.trim().split(/\r?\n/).filter(Boolean);
     if (!lines.length) return [];
     const hdrs = lines[0].split(",").map(h => h.trim());
     return lines.slice(1).map(line => {
       const vals = line.split(",");
-      return hdrs.reduce((o, h, i) => { o[h] = (vals[i] || "").trim(); return o; }, {});
+      return hdrs.reduce((o,h,i) => { o[h]=(vals[i]||"").trim(); return o; }, {});
+    });
+  }
+  function pd(v) { if (!v) return null; const d=new Date(`${v}T00:00:00`); return isNaN(d)?null:d; }
+  function dBetween(a,b) { return Math.ceil((b-a)/86400000); }
+  function addDays(d,n) { const r=new Date(d); r.setDate(r.getDate()+Math.round(n)); return r; }
+  function setStatus(cls, lbl) {
+    const b=document.getElementById("statusBadge");
+    b.className=`badge ${cls}`;
+    document.getElementById("statusText").textContent=lbl;
+  }
+
+  /* ── COMPUTE METRICS ────────────────────────────────────────── */
+  function computeMetrics(status, daily) {
+    const current   = Number(status.current_n||0);
+    const target    = Number(status.target_n||0);
+    const endDate   = pd(status.end_date);
+    const lastUpd   = pd(status.last_updated);
+    const today     = lastUpd || new Date();
+    const pct       = target>0 ? current/target : 0;
+    const remaining = Math.max(0, target-current);
+    const daysLeft  = endDate ? Math.max(0, dBetween(today,endDate)) : null;
+
+    // Sort daily data
+    const data = daily
+      .map(r => ({ date:r.date, surveys:Number(r.surveys||0) }))
+      .filter(r => r.date && Number.isFinite(r.surveys) && r.surveys>=0)
+      .sort((a,b) => a.date.localeCompare(b.date));
+
+    // Deltas from cumulative values
+    data.forEach((d,i) => {
+      d.cumul = d.surveys;
+      d.delta = i===0 ? null : Math.max(0, d.surveys - data[i-1].surveys);
+    });
+    const deltas = data.map(d=>d.delta).filter(v=>v!==null);
+
+    let avgPace=null, neededPace=null, projEnd=null;
+    let statusCls="gray", statusLbl="Ni podatkov";
+
+    if (deltas.length>0) {
+      avgPace = deltas.reduce((s,v)=>s+v,0) / deltas.length;
+      if (daysLeft>0) neededPace = remaining / daysLeft;
+      if (avgPace>0 && remaining>0) projEnd = addDays(today, remaining/avgPace);
+      else if (remaining<=0) projEnd = today;
+      if (projEnd && endDate) {
+        const lag = dBetween(endDate, projEnd);
+        if (lag<=0)       { statusCls="green"; statusLbl="V planu"; }
+        else if (lag<=21) { statusCls="amber"; statusLbl="Tveganje"; }
+        else              { statusCls="red";   statusLbl="Zamuda"; }
+      }
+    }
+
+    // Start date — from CSV or estimated
+    let startDate = pd(status.start_date);
+    let startEstimated = false;
+    if (!startDate && data.length>0 && avgPace>0) {
+      startDate = addDays(pd(data[0].date), -Math.round(data[0].surveys/avgPace));
+      startEstimated = true;
+    }
+
+    const buffer = (projEnd && endDate) ? dBetween(projEnd, endDate) : null; // positive = early
+
+    return {
+      current, target, endDate, lastUpd, today, pct, remaining, daysLeft,
+      data, deltas, avgPace, neededPace, projEnd,
+      statusCls, statusLbl, startDate, startEstimated, buffer,
+      projName: status.project_name || "Poročilo o poteku terenske ankete"
+    };
+  }
+
+  /* ── EXECUTIVE SUMMARY ──────────────────────────────────────── */
+  function renderSummary(m) {
+    const box = document.getElementById("summaryBox");
+    box.className = `summary-box ${m.statusCls}`;
+    let txt = "";
+    if (m.statusCls === "gray" || m.avgPace === null) {
+      txt = "Ni dovolj podatkov za projekcijo. Dodaj vsaj dve vrstici v <code>daily_progress.csv</code>.";
+    } else {
+      const pace = N.format(Math.round(m.avgPace));
+      const wkly = N.format(Math.round(m.avgPace*7));
+      const proj = m.projEnd ? D.format(m.projEnd) : "–";
+      if (m.statusCls === "green") {
+        const buf = m.buffer!==null ? N.format(m.buffer) : "–";
+        txt = `✓ Pri trenutnem tempu (<strong>${pace} anket/dan · ${wkly}/teden</strong>) bo projekt zaključen <strong>${proj}</strong> — <strong>${buf} dni pred rokom</strong>.`;
+      } else if (m.statusCls === "amber") {
+        const lag = m.buffer!==null ? N.format(Math.abs(m.buffer)) : "–";
+        const need = m.neededPace!==null ? N.format(Math.round(m.neededPace)) : "–";
+        txt = `⚠ Trenutni tempo (<strong>${pace}/dan</strong>) je prenizek. Projekcija kaže zamudo <strong>${lag} dni</strong>. Za pravočasen zaključek je potrebnih vsaj <strong>${need} anket/dan</strong>.`;
+      } else {
+        const lag = m.buffer!==null ? N.format(Math.abs(m.buffer)) : "–";
+        const need = m.neededPace!==null ? N.format(Math.round(m.neededPace)) : "–";
+        txt = `✗ Projekt zamuja. Pri tempu <strong>${pace}/dan</strong> bo zaključen <strong>${lag} dni po roku</strong>. Potrebno: vsaj <strong>${need} anket/dan</strong>.`;
+      }
+    }
+    box.innerHTML = txt;
+  }
+
+  /* ── KPIs ───────────────────────────────────────────────────── */
+  function renderKpis(m) {
+    const { current, target, remaining, pct, daysLeft, avgPace, neededPace, projEnd, endDate, lastUpd, projName, statusCls } = m;
+
+    document.title = `${projName} – poročilo`;
+    document.getElementById("projectName").textContent = projName;
+    document.getElementById("lastUpdated").textContent = lastUpd ? D.format(lastUpd) : "–";
+    setStatus(m.statusCls, m.statusLbl);
+
+    document.getElementById("currentN").textContent    = N.format(current);
+    document.getElementById("targetNote").textContent  = `Cilj: N = ${N.format(target)}`;
+    document.getElementById("remainingN").textContent  = N.format(remaining);
+    document.getElementById("remainingNote").textContent = `do cilja N = ${N.format(target)}`;
+    document.getElementById("percentDone").textContent = `${Math.round(pct*100)} %`;
+    document.getElementById("percentNote").textContent = `${N.format(current)} od ${N.format(target)}`;
+    document.getElementById("daysLeft").textContent    = daysLeft!==null ? N.format(daysLeft) : "–";
+    document.getElementById("projectionNote").innerHTML = projEnd
+      ? `Projekcija: <strong>${D.format(projEnd)}</strong>` : "Projekcija: –";
+
+    // Pace tile
+    document.getElementById("currentPace").textContent = avgPace!==null ? `${N.format(Math.round(avgPace))}/d` : "–";
+    const paceRow = document.getElementById("paceRow");
+    if (avgPace!==null && neededPace!==null) {
+      const gap = Math.round(neededPace - avgPace);
+      const weekly = N.format(Math.round(avgPace*7));
+      paceRow.innerHTML =
+        `<span class="chip info">${weekly}/teden</span>` +
+        `<span class="chip need">Potrebno: ${N.format(Math.round(neededPace))}/d</span>` +
+        `<span class="chip ${gap<=0?'ok':'warn'}">${gap<=0?'✓ V redu':'▲ '+N.format(gap)+' premalo'}</span>`;
+    } else {
+      paceRow.innerHTML = `<span class="tile-note">Premalo podatkov.</span>`;
+    }
+  }
+
+  /* ── PROGRESS BAR ───────────────────────────────────────────── */
+  function renderProgress(m) {
+    const { current, target, pct, statusCls } = m;
+    const pctW = Math.min(100, Math.max(0, pct*100));
+    const fill  = document.getElementById("progressFill");
+    fill.style.width = `${pctW}%`;
+    fill.className = `progress-fill ${statusCls==="gray"?"green":statusCls}`;
+    document.getElementById("progressLabel").textContent = `${N.format(current)} / ${N.format(target)}`;
+    document.getElementById("progressLeft").textContent  = `${Math.round(pct*100)} %`;
+    document.getElementById("progressRight").textContent = `Cilj N = ${N.format(target)}`;
+
+    // Milestone markers
+    const track = document.getElementById("progressTrack");
+    [25,50,75].forEach(p => {
+      const mk = document.createElement("div");
+      mk.className = "milestone";
+      mk.style.left = `${p}%`;
+      const lbl = document.createElement("div");
+      lbl.className = "milestone-label";
+      lbl.style.left = `${p}%`;
+      lbl.textContent = `${p} %`;
+      track.appendChild(mk);
+      track.appendChild(lbl);
     });
   }
 
-  function parseDate(v) {
-    if (!v) return null;
-    const d = new Date(`${v}T00:00:00`);
-    return isNaN(d) ? null : d;
-  }
+  /* ── TIMELINE ───────────────────────────────────────────────── */
+  function renderTimeline(m) {
+    const { startDate, startEstimated, today, projEnd, endDate, buffer } = m;
+    const host = document.getElementById("timelineHost");
 
-  function daysBetween(a, b) {
-    return Math.ceil((b - a) / 86400000);
-  }
-
-  function addDays(d, n) {
-    const r = new Date(d); r.setDate(r.getDate() + Math.round(n)); return r;
-  }
-
-  function setStatus(cls, label) {
-    const b = document.getElementById("statusBadge");
-    b.className = `badge ${cls}`;
-    document.getElementById("statusText").textContent = label;
-  }
-
-  function buildProgressRows(daily) {
-    return daily
-      .map(r => ({ date: r.date, surveys: Number(r.surveys || 0) }))
-      .filter(r => r.date && Number.isFinite(r.surveys) && r.surveys >= 0)
-      .sort((a, b) => a.date.localeCompare(b.date))
-      .map((row, index, rows) => {
-        const previous = index > 0 ? rows[index - 1].surveys : 0;
-        return {
-          ...row,
-          delta: Math.max(0, row.surveys - previous)
-        };
-      });
-  }
-
-  // ── MAIN UPDATE ──────────────────────────────────────────────────────────
-  function update(status, daily) {
-    const current  = Number(status.current_n || 0);
-    const target   = Number(status.target_n || 0);
-    const endDate  = parseDate(status.end_date);
-    const lastUpd  = parseDate(status.last_updated);
-    const today    = lastUpd || new Date();
-    const pct      = target > 0 ? current / target : 0;
-
-    // Header / title
-    const projName = status.project_name || "Poročilo o poteku terenske ankete";
-    document.title = `${projName} – poročilo`;
-    document.getElementById("projectName").textContent  = projName;
-    document.getElementById("lastUpdated").textContent  = lastUpd ? D.format(lastUpd) : (status.last_updated || "–");
-
-    // KPI 1 – zbrane ankete
-    document.getElementById("currentN").textContent    = N.format(current);
-    document.getElementById("targetNote").textContent  = `Cilj: N = ${N.format(target)}`;
-
-    // KPI 2 – dosežen cilj
-    document.getElementById("percentDone").textContent = `${Math.round(pct * 100)} %`;
-    document.getElementById("percentNote").textContent = `${N.format(current)} od ${N.format(target)} anket`;
-
-    // KPI 4 – dni do konca
-    const daysLeft = endDate ? Math.max(0, daysBetween(today, endDate)) : null;
-    document.getElementById("daysLeft").textContent = daysLeft !== null ? N.format(daysLeft) : "–";
-
-    // ── PACE & PROJECTION ──
-    const data = buildProgressRows(daily);
-
-    let avgPace = null, neededPace = null, projEnd = null;
-    let statusCls = "gray", statusLbl = "Ni podatkov";
-
-    if (data.length > 0) {
-      const usableDeltas = data.length > 1 ? data.slice(1) : data;
-      const totalDelta = usableDeltas.reduce((s, r) => s + r.delta, 0);
-      avgPace = totalDelta / usableDeltas.length;
-
-      const remaining = target - current;
-
-      if (daysLeft > 0) neededPace = remaining / daysLeft;
-
-      if (avgPace > 0 && remaining > 0) {
-        projEnd = addDays(today, remaining / avgPace);
-      } else if (remaining <= 0) {
-        projEnd = today;
-      }
-
-      if (projEnd && endDate) {
-        const lag = daysBetween(endDate, projEnd); // positive = over deadline
-        if (lag <= 0)  { statusCls = "green"; statusLbl = "V planu"; }
-        else if (lag <= 21) { statusCls = "amber"; statusLbl = "Tveganje"; }
-        else           { statusCls = "red";   statusLbl = "Zamuda"; }
-      }
+    if (!endDate) {
+      host.innerHTML = '<div class="empty-chart">Ni podatka o roku (end_date v status.csv).</div>';
+      return;
     }
 
-    setStatus(statusCls, statusLbl);
+    const tStart = startDate || today;
+    const tEnd   = projEnd && dBetween(endDate, projEnd) > 0 ? projEnd : endDate;
+    const span   = Math.max(1, dBetween(tStart, tEnd));
 
-    // KPI 3 – tempo
-    document.getElementById("currentPace").textContent =
-      avgPace !== null ? `${N.format(Math.round(avgPace))}/d` : "–";
+    const W=880, H=110, ML=14, MR=14, MT=38, MB=30;
+    const iW = W - ML - MR;
 
-    const paceRow = document.getElementById("paceRow");
-    if (avgPace !== null && neededPace !== null) {
-      const gap = Math.round(neededPace - avgPace);
-      const gapCls = gap <= 0 ? "ok" : "warn";
-      const gapTxt = gap <= 0
-        ? `✓ ${N.format(Math.abs(gap))}/d nad ciljem`
-        : `▲ ${N.format(gap)}/d pod ciljem`;
-      paceRow.innerHTML =
-        `<span class="chip needed">Potrebno: ${N.format(Math.round(neededPace))}/d</span>` +
-        `<span class="chip ${gapCls}">${gapTxt}</span>`;
-    } else {
-      paceRow.innerHTML = `<span class="tile-note" style="margin-top:0">Premalo podatkov za projekcijo.</span>`;
+    function xOf(d) { return ML + (dBetween(tStart,d)/span)*iW; }
+
+    const points = [];
+    if (startDate) points.push({ d:startDate, lbl:"Začetek"+(startEstimated?" (ocena)":""), col:"#6b7b93", above: Ds.format(startDate) });
+    points.push({ d:today,   lbl:"Danes",     col:"var(--blue)",  above: Ds.format(today) });
+    if (projEnd) points.push({ d:projEnd, lbl:"Projekcija", col: buffer>=0?"var(--green)":"var(--red)", above: Ds.format(projEnd) });
+    if (endDate) points.push({ d:endDate, lbl:"Rok",        col:"#374151", above: Ds.format(endDate) });
+
+    // Deduplicate very close points
+    const uniquePts = points.filter((p,i) =>
+      !points.slice(0,i).some(q => Math.abs(dBetween(q.d,p.d)) < 3)
+    );
+
+    // Background segments
+    let segs = "";
+    // Elapsed (start → today)
+    if (startDate && dBetween(tStart,today)>0) {
+      segs += `<rect x="${xOf(tStart)}" y="${MT-3}" width="${xOf(today)-xOf(tStart)}" height="6" rx="3" fill="var(--blue)" opacity=".25"/>`;
+    }
+    // Active (today → min(projEnd,endDate)) 
+    const activeEnd = projEnd || endDate;
+    if (activeEnd && dBetween(today, activeEnd) > 0) {
+      const col = buffer>=0 ? "var(--green)" : "var(--red)";
+      segs += `<rect x="${xOf(today)}" y="${MT-3}" width="${Math.max(0,xOf(activeEnd)-xOf(today))}" height="6" rx="3" fill="${col}" opacity=".18"/>`;
+    }
+    // Overrun (endDate → projEnd) if zamuda
+    if (projEnd && endDate && dBetween(endDate,projEnd)>0) {
+      segs += `<rect x="${xOf(endDate)}" y="${MT-3}" width="${xOf(projEnd)-xOf(endDate)}" height="6" rx="3" fill="var(--red)" opacity=".35"/>`;
     }
 
-    // Projection note
-    document.getElementById("projectionNote").innerHTML = projEnd
-      ? `Projekcija zaključka: <strong>${D.format(projEnd)}</strong>`
-      : "Projekcija zaključka: –";
+    // Base line
+    const lineEl = `<line x1="${ML}" y1="${MT}" x2="${W-MR}" y2="${MT}" stroke="#d1d8e4" stroke-width="2" stroke-linecap="round"/>`;
 
-    // ── PROGRESS BAR ──
-    const pctW = Math.min(100, Math.max(0, pct * 100));
-    const fill = document.getElementById("progressFill");
-    fill.style.width = `${pctW}%`;
-    fill.className = `progress-fill ${statusCls === "gray" ? "green" : statusCls}`;
-    document.getElementById("progressLabel").textContent =
-      `${N.format(current)} / ${N.format(target)}`;
-    document.getElementById("progressLeft").textContent = `${Math.round(pct * 100)} %`;
-    document.getElementById("progressRight").textContent = `Cilj N = ${N.format(target)}`;
+    // Point markers + labels
+    let markers = "";
+    uniquePts.forEach((p,i) => {
+      const x = xOf(p.d);
+      const isAbove = i%2===0;
+      markers += `
+        <circle cx="${x}" cy="${MT}" r="7" fill="white" stroke="${p.col}" stroke-width="2.5"/>
+        <circle cx="${x}" cy="${MT}" r="3" fill="${p.col}"/>
+        <text x="${x}" y="${isAbove ? MT-16 : MT+22}" text-anchor="middle"
+          fill="${p.col}" font-size="11.5" font-weight="700"
+          font-family="DM Sans,Arial,sans-serif">${p.above}</text>
+        <text x="${x}" y="${isAbove ? MT-28 : MT+34}" text-anchor="middle"
+          fill="#8896ab" font-size="10.5"
+          font-family="DM Sans,Arial,sans-serif">${p.lbl}</text>`;
+    });
+
+    host.innerHTML = `
+      <svg class="timeline-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Časovnica projekta">
+        ${lineEl}${segs}${markers}
+      </svg>`;
+
+    // Sub-label
+    if (buffer!==null) {
+      document.getElementById("timelineSub").textContent =
+        buffer>=0
+          ? `Rezerva: ${N.format(buffer)} dni`
+          : `Zamuda: ${N.format(Math.abs(buffer))} dni`;
+    }
   }
 
-  // ── CHART ────────────────────────────────────────────────────────────────
-  function renderChart(daily) {
+  /* ── CHART ──────────────────────────────────────────────────── */
+  function renderChart(m) {
+    const { data, startDate, endDate, target } = m;
     const host = document.getElementById("chartHost");
-
-    const data = buildProgressRows(daily);
 
     if (!data.length) {
       host.innerHTML = '<div class="empty-chart">Za graf dodaj vrstice v daily_progress.csv.</div>';
       return;
     }
 
-    const maxCumul = Math.max(...data.map(d => d.surveys), 1);
-    const maxDaily = Math.max(...data.map(d => d.delta), 1);
+    const deltaVals = data.map(d=>d.delta).filter(v=>v!==null);
+    const maxCumul  = Math.max(...data.map(d=>d.cumul), 1);
+    const maxDaily  = Math.max(...deltaVals, 1);
 
-    const W = 960, H = 300;
-    const m = { top: 24, right: 72, bottom: 46, left: 58 };
-    const iW = W - m.left - m.right;
-    const iH = H - m.top - m.bottom;
+    // Linear target line — requires startDate and endDate
+    const hasTarget = !!(startDate && endDate && target>0);
+    if (hasTarget) document.getElementById("targetLegendItem").style.display="flex";
 
+    const W=960, H=300;
+    const m2 = { top:24, right:72, bottom:46, left:58 };
+    const iW = W-m2.left-m2.right, iH = H-m2.top-m2.bottom;
     const n = data.length;
-    const barGap = n > 1 ? Math.min(8, iW / (n * 5)) : 0;
-    const barW   = Math.max(6, (iW - barGap * Math.max(n - 1, 0)) / n);
+    const barGap = n>1 ? Math.min(8, iW/(n*5)) : 0;
+    const barW   = Math.max(6, (iW-barGap*Math.max(n-1,0))/n);
 
-    const xCenter = i => m.left + i * (barW + barGap) + barW / 2;
-    const yDaily  = v => m.top + iH - (v / maxDaily) * iH;
-    const yCumul  = v => m.top + iH - (v / maxCumul) * iH;
+    const xC    = i => m2.left + i*(barW+barGap) + barW/2;
+    const yD    = v => m2.top + iH - (v/maxDaily)*iH;
+    const yC    = v => m2.top + iH - (v/maxCumul)*iH;
 
-    // Grid lines (3 levels for daily axis)
-    const gridLevels = [0, 0.5, 1].map(f => {
-      const v = Math.round(maxDaily * f);
-      const y = yDaily(v);
-      return `
-        <line x1="${m.left}" y1="${y}" x2="${W - m.right}" y2="${y}"
-          stroke="#dde2ec" stroke-width="1" ${f > 0 ? 'stroke-dasharray="4 4"' : ''}/>
-        <text x="${m.left - 8}" y="${y + 4}" text-anchor="end"
-          fill="#8896ab" font-size="11" font-family="DM Sans,Arial,sans-serif">${N.format(v)}</text>`;
-    }).join("");
-
-    // Right axis ticks (cumulative)
-    const rightTicks = [0, 0.5, 1].map(f => {
-      const v = Math.round(maxCumul * f);
-      const y = yCumul(v);
-      return `<text x="${W - m.right + 10}" y="${y + 4}" text-anchor="start"
+    // Grid & axes
+    const grid = [0,.5,1].map(f => {
+      const v=Math.round(maxDaily*f), y=yD(v);
+      return `<line x1="${m2.left}" y1="${y}" x2="${W-m2.right}" y2="${y}"
+        stroke="#dde2ec" stroke-width="1" ${f>0?'stroke-dasharray="4 4"':''}/>
+        <text x="${m2.left-8}" y="${y+4}" text-anchor="end" fill="#8896ab"
+          font-size="11" font-family="DM Sans,Arial,sans-serif">${N.format(v)}</text>`;
+    }).join("") +
+    [0,.5,1].map(f => {
+      const v=Math.round(maxCumul*f), y=yC(v);
+      return `<text x="${W-m2.right+10}" y="${y+4}" text-anchor="start"
         fill="#16803c" opacity=".7" font-size="11" font-family="DM Sans,Arial,sans-serif">${N.format(v)}</text>`;
     }).join("");
 
-    // Bars
-    const bars = data.map((d, i) => {
-      const bH = (d.delta / maxDaily) * iH;
-      const x  = m.left + i * (barW + barGap);
-      const y  = m.top + iH - bH;
-      const labelY = Math.max(m.top + 13, y - 6);
-      return `
-        <rect x="${x}" y="${y}" width="${barW}" height="${bH}" rx="3"
-          fill="#1d64d8" opacity=".75"></rect>
-        <text x="${x + barW / 2}" y="${labelY}" text-anchor="middle"
-          fill="#4b5d75" font-size="11" font-family="DM Sans,Arial,sans-serif">${N.format(d.delta)}</text>
-        <text x="${x + barW / 2}" y="${H - 12}" text-anchor="middle"
-          fill="#8896ab" font-size="11" font-family="DM Sans,Arial,sans-serif">${d.date.slice(5)}</text>`;
+    // Bars (deltas only, i>=1)
+    const bars = data.map((d,i) => {
+      const x = m2.left + i*(barW+barGap);
+      const dateLbl = `<text x="${x+barW/2}" y="${H-12}" text-anchor="middle"
+        fill="#8896ab" font-size="11" font-family="DM Sans,Arial,sans-serif">${d.date.slice(5)}</text>`;
+      if (d.delta===null) return dateLbl;
+      const bH=(d.delta/maxDaily)*iH, y=m2.top+iH-bH;
+      return `<rect x="${x}" y="${y}" width="${barW}" height="${bH}" rx="3" fill="#1d64d8" opacity=".75"/>
+        <text x="${x+barW/2}" y="${Math.max(m2.top+13,y-5)}" text-anchor="middle"
+          fill="#4b5d75" font-size="11" font-family="DM Sans,Arial,sans-serif">+${N.format(d.delta)}</text>
+        ${dateLbl}`;
     }).join("");
 
-    // Cumulative line + dots
-    const linePoints = data.map((d, i) => `${xCenter(i)},${yCumul(d.surveys)}`).join(" ");
-    const dots = data.map((d, i) => {
-      const cx = xCenter(i), cy = yCumul(d.surveys);
-      return `
-        <circle cx="${cx}" cy="${cy}" r="5" fill="white" stroke="#16803c" stroke-width="2.5"></circle>
-        <circle cx="${cx}" cy="${cy}" r="2.5" fill="#16803c"></circle>`;
-    }).join("");
+    // Cumulative actual line
+    const linePts  = data.map((d,i) => `${xC(i)},${yC(d.cumul)}`).join(" ");
+    const actDots  = data.map((d,i) => `
+      <circle cx="${xC(i)}" cy="${yC(d.cumul)}" r="5" fill="white" stroke="#16803c" stroke-width="2.5"/>
+      <circle cx="${xC(i)}" cy="${yC(d.cumul)}" r="2.5" fill="#16803c"/>`).join("");
+
+    // Linear target line: from (x of first date at 0) to (x of last date at target)
+    let targetLine = "";
+    if (hasTarget) {
+      // Map startDate and endDate to x positions relative to chart
+      const firstDate = pd(data[0].date);
+      const lastDate  = pd(data[data.length-1].date);
+      const totalSpan = Math.max(1, dBetween(startDate, endDate));
+
+      // For each data point, compute expected cumul from linear plan
+      const targetPts = data.map((d,i) => {
+        const dd = pd(d.date);
+        const daysSinceStart = Math.max(0, dBetween(startDate, dd));
+        const plannedCumul = Math.min(target, (daysSinceStart/totalSpan)*target);
+        return `${xC(i)},${yC(Math.min(plannedCumul, maxCumul))}`;
+      }).join(" ");
+
+      targetLine = `<polyline points="${targetPts}" fill="none" stroke="#9ba8bb"
+        stroke-width="2" stroke-dasharray="6 4" stroke-linejoin="round"/>`;
+    }
 
     host.innerHTML = `
-      <svg class="chart-svg" viewBox="0 0 ${W} ${H}"
-           role="img" aria-label="Dnevni prirast in kumulativni napredek">
-
-        <!-- grid -->
-        ${gridLevels}
-
-        <!-- right axis line -->
-        <line x1="${W - m.right}" y1="${m.top}" x2="${W - m.right}" y2="${m.top + iH}"
-          stroke="#16803c" opacity=".2" stroke-width="1"/>
-        ${rightTicks}
-
-        <!-- left axis -->
-        <line x1="${m.left}" y1="${m.top}" x2="${m.left}" y2="${m.top + iH}"
-          stroke="#c6cdd9" stroke-width="1"/>
-
-        <!-- bottom axis -->
-        <line x1="${m.left}" y1="${m.top + iH}" x2="${W - m.right}" y2="${m.top + iH}"
-          stroke="#c6cdd9" stroke-width="1"/>
-
-        <!-- bars -->
+      <svg class="chart-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Dnevni prirast in kumulativni napredek">
+        ${grid}
+        <line x1="${m2.left}" y1="${m2.top}" x2="${m2.left}" y2="${m2.top+iH}" stroke="#c6cdd9" stroke-width="1"/>
+        <line x1="${m2.left}" y1="${m2.top+iH}" x2="${W-m2.right}" y2="${m2.top+iH}" stroke="#c6cdd9" stroke-width="1"/>
+        <line x1="${W-m2.right}" y1="${m2.top}" x2="${W-m2.right}" y2="${m2.top+iH}" stroke="#16803c" opacity=".2" stroke-width="1"/>
         ${bars}
-
-        <!-- cumulative line -->
-        ${n > 1 ? `<polyline points="${linePoints}"
-          fill="none" stroke="#16803c" stroke-width="2.5"
-          stroke-linejoin="round" stroke-linecap="round"/>` : ""}
-
-        <!-- dots -->
-        ${dots}
-
-        <!-- axis labels -->
-        <text x="${m.left - 36}" y="${m.top + iH / 2}" text-anchor="middle"
-          fill="#8896ab" font-size="11" font-family="DM Sans,Arial,sans-serif"
-          transform="rotate(-90, ${m.left - 36}, ${m.top + iH / 2})">Dnevno</text>
-        <text x="${W - m.right + 48}" y="${m.top + iH / 2}" text-anchor="middle"
-          fill="#16803c" opacity=".7" font-size="11" font-family="DM Sans,Arial,sans-serif"
-          transform="rotate(90, ${W - m.right + 48}, ${m.top + iH / 2})">Kumulativno</text>
+        ${targetLine}
+        ${n>1?`<polyline points="${linePts}" fill="none" stroke="#16803c" stroke-width="2.5"
+          stroke-linejoin="round" stroke-linecap="round"/>`:""}
+        ${actDots}
+        <text x="${m2.left-38}" y="${m2.top+iH/2}" text-anchor="middle" fill="#8896ab"
+          font-size="11" font-family="DM Sans,Arial,sans-serif"
+          transform="rotate(-90,${m2.left-38},${m2.top+iH/2})">Dnevno</text>
+        <text x="${W-m2.right+50}" y="${m2.top+iH/2}" text-anchor="middle" fill="#16803c" opacity=".7"
+          font-size="11" font-family="DM Sans,Arial,sans-serif"
+          transform="rotate(90,${W-m2.right+50},${m2.top+iH/2})">Kumulativno</text>
       </svg>`;
   }
 
-  // ── INIT ─────────────────────────────────────────────────────────────────
+  /* ── INIT ───────────────────────────────────────────────────── */
   async function init() {
     try {
       const [sr, dr] = await Promise.all([fetch("status.csv"), fetch("daily_progress.csv")]);
-      if (!sr.ok || !dr.ok) throw new Error("Napaka pri nalaganju CSV datotek.");
+      if (!sr.ok||!dr.ok) throw new Error("Napaka pri nalaganju CSV.");
       const statusRows = parseCsv(await sr.text());
       const dailyRows  = parseCsv(await dr.text());
-      update(statusRows[0] || {}, dailyRows);
-      renderChart(dailyRows);
-    } catch (err) {
-      document.getElementById("chartHost").innerHTML =
-        `<div class="empty-chart">Podatkov ni bilo mogoče naložiti: ${err.message}</div>`;
-      setStatus("gray", "Napaka");
+      const m = computeMetrics(statusRows[0]||{}, dailyRows);
+      renderSummary(m);
+      renderKpis(m);
+      renderProgress(m);
+      renderTimeline(m);
+      renderChart(m);
+    } catch(err) {
+      document.getElementById("summaryBox").className = "summary-box red";
+      document.getElementById("summaryBox").textContent = `Napaka: ${err.message}`;
+      setStatus("gray","Napaka");
     }
   }
-
   init();
 </script>
 </body>
